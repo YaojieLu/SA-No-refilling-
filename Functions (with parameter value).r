@@ -58,7 +58,7 @@ averAf <- function(wL,
   gsf <- Vectorize(function(w)gswLf(w, wL))
 
   Evf <- function(w)h*VPD*gsf(w)
-  Lf <- function(w)Evf(w)+w/200
+  Lf <- function(w)Evf(w)+w/20
   rLf <- function(w)1/Lf(w)
   integralrLf <- Vectorize(function(w)integrate(rLf, w, 1, rel.tol=.Machine$double.eps^0.5)$value)
   fnoc <- function(w)1/Lf(w)*exp(-gamma*w-k*integralrLf(w))
