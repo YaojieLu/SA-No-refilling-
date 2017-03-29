@@ -2,6 +2,16 @@
 # ps(w)
 psf <- function(w)pe*w^(-b)
 
+# PLC(px)
+PLCf <- function(px)1-exp(-(-px/d)^c)
+
+# modified PLC(px)
+PLCfm <- function(px, wL){
+  pxmin <- psf(wL)
+  res <- ifelse(px>pxmin, PLCf(pxmin), PLCf(px))
+  return(res)
+}
+
 # xylem conductance function
 kxf <- function(x)kxmax*exp(-(-x/d)^c)
 
@@ -48,5 +58,13 @@ optwLf <- Vectorize(function(wLr){
 Psi50fd <- Vectorize(function(d){
   f1 <- function(px)exp(-(-px/d)^c)-0.5
   res <- uniroot(f1, c(-100, 0), tol=.Machine$double.eps)$root
+  return(res)
+})
+
+# ESS g1(ps)
+ESSg1psf <- Vectorize(function(ps, wL, VPD=0.02, a=1.6){
+  f1 <- function(w)psf(w)-ps
+  w <- uniroot(f1, c(0.001, 1), tol=.Machine$double.eps)$root
+  res <- sqrt(VPD*100)*(ca*gswLf(w, wL)/(a*Af(gswLf(w, wL)))-1)
   return(res)
 })
