@@ -41,7 +41,26 @@ averAirelf <- function(wLi, wLr){
   
   f1 <- Vectorize(function(w)Af(gswLfi(w))*fnoc(w))
   res <- integrate(f1, wLi, 1, rel.tol=.Machine$double.eps^0.45)$value
-  #message(wLr, " ", wLi, " ", res)
+  message(wLr, " ", wLi, " ", res)
+  return(res)
+}
+
+# Averages
+averf <- function(wL){
+  
+  gswLf1 <- Vectorize(function(w)ifelse(w<wL, 0, gswLf(w, wL)))
+
+  Evf <- function(w)h*VPD*gswLf1(w)
+  Lf <- function(w)Evf(w)+w/1000
+  rLf <- function(w)1/Lf(w)
+  integralrLf <- Vectorize(function(w)integrate(rLf, w, 1, rel.tol=.Machine$double.eps^0.5)$value)
+  fnoc <- function(w)1/Lf(w)*exp(-gamma*w-k*integralrLf(w))
+  browser()
+  res1 <- integrate(fnoc, 0, 1, rel.tol=.Machine$double.eps^0.5)#$value
+  cPDF <- 1/res1$value
+  
+  fA <- Vectorize(function(w)Af(gswLf1(w))*cPDF*fnoc(w))
+  res <- integrate(fA, wL, 1, rel.tol=.Machine$double.eps^0.45)$value
   return(res)
 }
 
