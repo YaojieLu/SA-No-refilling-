@@ -24,21 +24,21 @@ averAirelf <- function(wLi, wLr){
   gswLfi <- Vectorize(function(w)ifelse(w<wLi, 0, gswLf(w, wLi)))
   
   Evf <- function(w)h*VPD*gswLfr(w)
-  Lf <- function(w)Evf(w)+w/20
+  Lf <- function(w)Evf(w)+w/1000
   rLf <- function(w)1/Lf(w)
   integralrLf <- Vectorize(function(w)integrate(rLf, w, 1, rel.tol=.Machine$double.eps^0.5)$value)
   fnoc <- function(w)1/Lf(w)*exp(-gamma*w-k*integralrLf(w))
   
   f1 <- Vectorize(function(w)Af(gswLfi(w))*fnoc(w))
   res <- integrate(f1, wLi, 1, rel.tol=.Machine$double.eps^0.45)$value
-  #message(wLi, " ", res)
+  #message(wLr, " ", wLi, " ", res)
   return(res)
 }
 
 # ESS wL
 optwLf <- Vectorize(function(wLr){
   averAirelf1 <- Vectorize(function(wLi)averAirelf(wLi, wLr))
-  optwLi <- optimize(averAirelf1, c(0.1, 0.3), tol=.Machine$double.eps, maximum=T)
+  optwLi <- optimize(averAirelf1, c(0.1, 0.3), tol=.Machine$double.eps^0.3, maximum=T)
   res <- optwLi$maximum-wLr
   message(wLr, " ", optwLi$maximum)
   return(res)

@@ -24,9 +24,9 @@ h2 <- l*LAI/nZ*p/1000
 
 #environmental conditions
 ca <- 400
-k <- c(0.025, 0.1)
-MAP <- c(500, 2000)
-d <- seq(1, 10, by=1)
+k <- c(0.025, 0.05, 0.1)
+MAP <- c(912.5, 1825, 3650)
+d <- seq(1, 15, by=1)
 env <- as.vector(expand.grid(ca, k, MAP, d))
 
 # Initialize
