@@ -40,7 +40,7 @@ for(i in 1:nrow(env)){
   d <- env[i, 4]
   gamma <- 1/((MAP/365/k)/1000)*nZ
   
-  x <- try(uniroot(optwLf, c(0.1, 0.2), tol=.Machine$double.eps))
+  x <- try(uniroot(optwLf, c(0.1, 0.3), tol=.Machine$double.eps))
   if(is.numeric(x[[1]])){
     optwL[i, ] <- c(x$root, x$f.root)
   }else{
