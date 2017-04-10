@@ -27,15 +27,5 @@ MAP <- 912.5
 gamma <- 1/((MAP/365/k)/1000)*nZ
 d <- 15
 
-#uniroot(optwLf, c(0.1, 0.3), tol=.Machine$double.eps)#0.113478057693995
-x <- seq(0.1, 0.12, by=0.001)
-y1 <- numeric()
-y2 <- numeric()
-for(i in 1:length(x)){
-  y1[i] <- averAirelf(wLi=x[i], wLr=0.1134780)
-  y2[i] <- averAirelf(wLi=x[i], wLr=0.1134781)
-}
-plot(x, y1, type="l")
-points(x, y2, type="l", col="red")
-optwLf(0.113478)
-optwLf(0.1134781)
+x <- data.frame()
+x <- uniroot(optwLf, c(0.1, 0.3), tol=.Machine$double.eps)

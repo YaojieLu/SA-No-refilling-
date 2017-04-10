@@ -41,7 +41,7 @@ averAirelf <- function(wLi, wLr){
   
   f1 <- Vectorize(function(w)Af(gswLfi(w))*fnoc(w))
   res <- integrate(f1, wLi, 1, rel.tol=.Machine$double.eps^0.45)$value
-  message(wLr, " ", wLi, " ", res)
+  #message(wLr, " ", wLi, " ", res)
   return(res)
 }
 

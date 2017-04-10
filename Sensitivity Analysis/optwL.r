@@ -30,7 +30,7 @@ d <- seq(1, 15, by=1)
 env <- as.vector(expand.grid(ca, k, MAP, d))
 
 # Initialize
-optwL <- matrix(nrow=nrow(env), ncol=1)
+optwL <- data.frame(wL=numeric(nrow(env)), diff=numeric(nrow(env)))
 
 # Sensitivity Analysis
 for(i in 1:nrow(env)){
@@ -40,13 +40,16 @@ for(i in 1:nrow(env)){
   d <- env[i, 4]
   gamma <- 1/((MAP/365/k)/1000)*nZ
   
-  x <- try(uniroot(optwLf, c(0.1, 0.3), tol=.Machine$double.eps)$root)
-  optwL[i, ] <- ifelse(is.numeric(x), x, 100)
-  message(i, "/", nrow(env))
+  x <- try(uniroot(optwLf, c(0.1, 0.2), tol=.Machine$double.eps))
+  if(is.numeric(x[[1]])){
+    optwL[i, ] <- c(x$root, x$f.root)
+  }else{
+    optwL[i, ] <- 100
+  }
 }
 
 # Collect results
 res <- cbind(env, optwL)
-colnames(res) <- c("ca", "k", "MAP", "d", "optwL")
+colnames(res) <- c("ca", "k", "MAP", "d", "optwL", "difference")
 
 write.csv(res, "Results/optwL.csv", row.names = FALSE)
