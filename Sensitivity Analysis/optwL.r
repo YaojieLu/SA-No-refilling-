@@ -46,6 +46,7 @@ for(i in 1:nrow(env)){
   }else{
     optwL[i, ] <- 100
   }
+  message(i/nrow(env))
 }
 
 # Collect results
