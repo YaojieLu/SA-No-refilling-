@@ -30,10 +30,12 @@ d <- seq(1, 15, by=1)
 env <- as.vector(expand.grid(ca, k, MAP, d))
 
 # Initialize
-optwL <- data.frame(wL=numeric(nrow(env)), diff=numeric(nrow(env)))
+total <- nrow(env)
+optwL <- data.frame(wL=numeric(total), diff=numeric(total))
+pb <- txtProgressBar(min=0, max=total, style=3)
 
 # Sensitivity Analysis
-for(i in 1:nrow(env)){
+for(i in 1:total){
   ca <- env[i, 1]
   k <- env[i, 2]
   MAP <- env[i, 3]
@@ -46,9 +48,9 @@ for(i in 1:nrow(env)){
   }else{
     optwL[i, ] <- 100
   }
-  message(i/nrow(env))
+  setTxtProgressBar(pb, i)
 }
-
+close(pb)
 # Collect results
 res <- cbind(env, optwL)
 colnames(res) <- c("ca", "k", "MAP", "d", "optwL", "difference")

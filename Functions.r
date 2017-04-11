@@ -34,7 +34,7 @@ averAirelf <- function(wLi, wLr){
   gswLfi <- Vectorize(function(w)ifelse(w<wLi, 0, gswLf(w, wLi)))
   
   Evf <- function(w)h*VPD*gswLfr(w)
-  Lf <- function(w)Evf(w)+w/1000
+  Lf <- function(w)Evf(w)+w/100
   rLf <- function(w)1/Lf(w)
   integralrLf <- Vectorize(function(w)integrate(rLf, w, 1, rel.tol=.Machine$double.eps^0.5)$value)
   fnoc <- function(w)1/Lf(w)*exp(-gamma*w-k*integralrLf(w))
@@ -51,7 +51,7 @@ averf <- function(wL){
   gswLf1 <- Vectorize(function(w)ifelse(w<wL, 0, gswLf(w, wL)))
 
   Evf <- function(w)h*VPD*gswLf1(w)
-  Lf <- function(w)Evf(w)+w/1000
+  Lf <- function(w)Evf(w)+w/20
   rLf <- function(w)1/Lf(w)
   integralrLf <- Vectorize(function(w)integrate(rLf, w, 1, rel.tol=.Machine$double.eps^0.5)$value)
   fnoc <- function(w)1/Lf(w)*exp(-gamma*w-k*integralrLf(w))
@@ -69,7 +69,7 @@ optwLf <- Vectorize(function(wLr){
   averAirelf1 <- Vectorize(function(wLi)averAirelf(wLi, wLr))
   optwLi <- optimize(averAirelf1, c(0.1, 0.3), tol=.Machine$double.eps^0.3, maximum=T)
   res <- optwLi$maximum-wLr
-  message(wLr, " ", optwLi$maximum)
+  #message(wLr, " ", optwLi$maximum)
   return(res)
 })
 
