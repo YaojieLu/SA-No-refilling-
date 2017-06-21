@@ -2,6 +2,9 @@
 # ps(w)
 psf <- function(w)pe*w^(-b)
 
+# wf(ps)
+wf <- function(ps)(ps/pe)^(-1/b)
+
 # PLC(px)
 PLCf <- function(px)1-exp(-(-px/d)^c)
 
@@ -12,6 +15,13 @@ PLCfm <- function(px, wL){
   return(res)
 }
 
+# P50
+P50f <- Vectorize(function(d){
+  f1 <- function(px)exp(-(-px/d)^c)-0.5
+  res <- uniroot(f1, c(-20, 0), tol=.Machine$double.eps)$root
+  return(res)
+})
+
 # xylem conductance function
 kxf <- function(x)kxmax*exp(-(-x/d)^c)
 
@@ -21,6 +31,21 @@ gswLf <- function(w, wL){
   pxmin <- psf(wL)
   kxmin <- kxf(pxmin)
   res <- (ps-pxmin)*h2*kxmin/(h*VPD)
+  return(res)
+}
+
+# family ESS gs(ps)
+gswLpsf <- function(ps, wL){
+  w <- wf(ps)
+  res <- gswLf(w, wL)
+  return(res)
+}
+
+# family ESS PLC(ps)
+ESSPLCpsf <- function(ps, wL){
+  w <- wf(ps)
+  pxL <- psf(wL)
+  res <- PLCf(pxL)
   return(res)
 }
 
