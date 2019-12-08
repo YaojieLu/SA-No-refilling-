@@ -29,6 +29,7 @@ wL <- 0.156779197039202
 f1 <- function(w)gswLf(w, wL)
 x <- seq(wL, 1, by=(1-wL)/100)
 y <- f1(x)
-data <- data.frame(w=x, gs=y)
+z <- Af(y)
+data <- data.frame(w=x, gs=y, A=z)
 
 write.csv(data, "Results/gs(w).csv", row.names = FALSE)
